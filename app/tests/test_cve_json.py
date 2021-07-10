@@ -6,6 +6,7 @@
 #
 import unittest
 from pkg.cvecrawler.cve_json import is_cve_json_filename
+from pkg.cvecrawler.cve_json import extract_cveid
 
 class CveJsonTestCase(unittest.TestCase):
     def setUp(self):
@@ -26,3 +27,20 @@ class CveJsonTestCase(unittest.TestCase):
     def test_is_cve_json_filename_40(self):
         self.assertFalse(is_cve_json_filename('openpgp-encrypted-message'))
         
+
+class ExtractCveidTestCase(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+    
+    def test_extract_cveid_10(self):
+        self.assertTrue('CVE-2021-28491'==extract_cveid('CVE-2021-28491. - SQLite heap overflow'))
+    
+    def test_extract_cveid_20(self):
+        self.assertTrue(None==extract_cveid('TYPO3 Form Designer backend module of the Form Framework is vulnerable to cross-site scripting'))
+    
+    def test_extract_cveid_30(self):
+        self.assertTrue('CVE-2020-11575'==extract_cveid('Display and loop C codes, CVE-2020-11575, are vulnerable to heap based buffer overflow'))
+
