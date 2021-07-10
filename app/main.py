@@ -29,6 +29,13 @@ def env_init():
     g_downloads = g_apphome + '/downloads'
     create_folder(g_downloads)
 
+    ### Get shell commend and run
+    if not os.path.isdir(g_apphome + '/cvelist'):
+        os.system('cd {apphome}'.format(apphome=g_apphome))
+        os.system('git clone https://github.com/stanleyshuang/cvelist.git')
+    shellfolder = g_apphome + '/shell'
+    os.system(shellfolder + '/sync.sh')
+
     ### Enumerate g_inputs
     g_inputs = g_apphome + '/inputs'
     filelist = get_name_list_of_files(g_inputs)
