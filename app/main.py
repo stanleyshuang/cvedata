@@ -8,7 +8,7 @@
 import os, sys
 
 from pkg.cvecrawler.cveproject import cveproject
-from pkg.cvecrawler.cve_json import is_cve_json_filename
+from pkg.cvetracer.linefeed import linefeed
 from pkg.util.util_file import create_folder, get_name_list_of_files
 
 def usage():
@@ -25,14 +25,6 @@ def env_init():
     downloads = apphome + '/downloads'
     create_folder(downloads)
 
-    ### Enumerate inputs
-    inputs = apphome + '/inputs'
-    filelist = get_name_list_of_files(inputs)
-
-    for file in filelist:
-        filename, file_extension = os.path.splitext(file)
-        print('{filename} {file_extension}'.format(filename=filename, file_extension=file_extension))
-    
 ###################################################
 ### main program begin
 if len(sys.argv) == 1:
@@ -54,9 +46,21 @@ if cmd=='test':
     import unittest
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
-else: 
+else:
+    apphome = os.environ.get('apphome')
+
     env_init()
     cveproject = cveproject()
-    cveproject.set_apphome(os.environ.get('apphome'))
+    cveproject.set_apphome(apphome)
     cveproject.loaddb()
-    cveproject.dump()
+
+    ### Enumerate inputs
+    inputs = apphome + '/inputs'
+    filelist = get_name_list_of_files(inputs)
+
+    for file in filelist:
+        linefeed = linefeed()
+        linefeed.set_input(inputs + '/' + file)
+        linefeed.set_crawler(cveproject)
+        linefeed.run()
+

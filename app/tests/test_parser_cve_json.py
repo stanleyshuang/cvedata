@@ -5,10 +5,11 @@
 # Date:     2021-07-10
 #
 import unittest
-from pkg.cvecrawler.cve_json import is_cve_json_filename
-from pkg.cvecrawler.cve_json import extract_cveid
+from pkg.util.parser_cve_json import is_cve_json_filename
+from pkg.util.parser_cve_json import extract_cveid
+from pkg.util.parser_cve_json import splitcveid
 
-class CveJsonTestCase(unittest.TestCase):
+class IsCveJsonFilenameTestCase(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -43,4 +44,21 @@ class ExtractCveidTestCase(unittest.TestCase):
     
     def test_extract_cveid_30(self):
         self.assertTrue('CVE-2020-11575'==extract_cveid('Display and loop C codes, CVE-2020-11575, are vulnerable to heap based buffer overflow'))
+
+        
+class ExtractCveidTestCase(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+    
+    def test_splitcveid_10(self):
+        self.assertTrue('2021', '28491'==splitcveid('CVE-2021-28491'))
+    
+    def test_splitcveid_20(self):
+        self.assertTrue((None, None)==splitcveid('TYPO3 Form Designer backend module of the Form Framework is vulnerable to cross-site scripting'))
+    
+    def test_splitcveid_30(self):
+        self.assertTrue('2020', '11575'==splitcveid('Display and loop C codes, CVE-2020-11575, are vulnerable to heap based buffer overflow'))
 
