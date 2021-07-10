@@ -11,10 +11,6 @@ from pkg.cvecrawler.cveproject import cveproject
 from pkg.cvecrawler.cve_json import is_cve_json_filename
 from pkg.util.util_file import create_folder, get_name_list_of_files
 
-g_apphome = ''
-g_downloads = ''
-g_inputs = ''
-
 def usage():
     print('USAGE:    python main.py cmd')
     print('--')
@@ -23,22 +19,15 @@ def usage():
     quit()
 
 def env_init():
-    g_apphome = os.environ.get('apphome')
+    apphome = os.environ.get('apphome')
 
-    ### Create g_downloads
-    g_downloads = g_apphome + '/downloads'
-    create_folder(g_downloads)
+    ### Create downloads
+    downloads = apphome + '/downloads'
+    create_folder(downloads)
 
-    ### Get shell commend and run
-    if not os.path.isdir(g_apphome + '/cvelist'):
-        os.system('cd {apphome}'.format(apphome=g_apphome))
-        os.system('git clone https://github.com/stanleyshuang/cvelist.git')
-    shellfolder = g_apphome + '/shell'
-    os.system(shellfolder + '/sync.sh')
-
-    ### Enumerate g_inputs
-    g_inputs = g_apphome + '/inputs'
-    filelist = get_name_list_of_files(g_inputs)
+    ### Enumerate inputs
+    inputs = apphome + '/inputs'
+    filelist = get_name_list_of_files(inputs)
 
     for file in filelist:
         filename, file_extension = os.path.splitext(file)
@@ -68,4 +57,6 @@ if cmd=='test':
 else: 
     env_init()
     cveproject = cveproject()
+    cveproject.set_apphome(os.environ.get('apphome'))
+    cveproject.loaddb()
     cveproject.dump()

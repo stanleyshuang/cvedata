@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-base_dir=$(dirname "$0")
-cvelist_home="$base_dir/../cvelist"
+cvelist_home="$apphome/cvelist"
 echo "cd $cvelist_home"
       cd $cvelist_home
 

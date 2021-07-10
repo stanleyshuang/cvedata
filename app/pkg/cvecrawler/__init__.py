@@ -14,6 +14,10 @@ class i_crawler():
         pass
         
     @abc.abstractmethod
+    def loaddb(self):
+        pass
+
+    @abc.abstractmethod
     def set(self, *args, **kwargs):
         print('set', args, kwargs)
 
