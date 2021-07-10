@@ -7,6 +7,7 @@
 #
 import os, sys
 
+from pkg.cvecrawler.cveproject import cveproject
 from pkg.cvecrawler.cve_json import is_cve_json_filename
 from pkg.util.util_file import create_folder, get_name_list_of_files
 
@@ -14,6 +15,7 @@ def usage():
     print('USAGE:    python main.py cmd')
     print('--')
     print('cmd:      --test for unit test')
+    print('          --crawler for default')
     quit()
     
 if len(sys.argv) == 1:
@@ -21,6 +23,7 @@ if len(sys.argv) == 1:
     quit()
 
 ### get argv[1] as input
+cmd = 'crawler'
 for idx in range(1, len(sys.argv)):
     if sys.argv[idx] in ['--test']:
         cmd = sys.argv[idx][2:]
@@ -49,4 +52,5 @@ if cmd=='test':
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
 else: 
-    usage()
+    cveproject = cveproject()
+    cveproject.dump()

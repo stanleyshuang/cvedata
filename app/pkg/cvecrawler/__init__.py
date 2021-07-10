@@ -19,5 +19,5 @@ class i_crawler():
 
     @abc.abstractmethod
     def dump(self):
-        print('dump aata')
+        print('dump')
         
