@@ -8,6 +8,7 @@
 import os, sys
 
 from pkg.cvecrawler.cveproject import cveproject
+from pkg.cvecrawler.nvdweb import nvdweb
 from pkg.cvetracer.linefeed import linefeed
 from pkg.util.util_file import create_folder, get_name_list_of_files
 
@@ -54,6 +55,9 @@ else:
     cveproject.set_apphome(apphome)
     cveproject.loaddb()
 
+    nvdweb = nvdweb()
+    nvdweb.loaddb()
+
     ### Enumerate inputs
     inputs = apphome + '/inputs'
     filelist = get_name_list_of_files(inputs)
@@ -62,5 +66,6 @@ else:
         linefeed = linefeed()
         linefeed.set_input(inputs + '/' + file)
         linefeed.set_crawler(cveproject)
+        # linefeed.set_crawler(nvdweb)
         linefeed.run()
 

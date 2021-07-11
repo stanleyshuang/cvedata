@@ -41,18 +41,39 @@ class cveproject(i_crawler):
             if os.path.exists(cvejson):
                 cvedata = open_json(cvejson)
                 if cvedata:
+                    vendor = ''
+                    score = ''
+
+                    ### vendor
+                    if 'affects' in cvedata:
+                        if 'vendor' in cvedata['affects']:
+                            if 'vendor_data' in cvedata['affects']['vendor']:
+                                if 'vendor_name' in cvedata['affects']['vendor']['vendor_data'][0]:
+                                    vendor = cvedata['affects']['vendor']['vendor_data'][0]['vendor_name']
+                                else:
+                                    vendor = 'xxx (no vendor_name)'
+                            else:
+                                vendor = 'xxx (no vendor_data)'
+                        else:
+                            vendor = 'xxx (no vendor)'
+                    else:
+                        vendor = 'xxx (no affects)'
+
+                    ### score
                     if 'impact' in cvedata:
                         if 'cvss' in cvedata['impact']:
                             if 'baseScore' in cvedata['impact']['cvss']:
                                 score = cvedata['impact']['cvss']['baseScore']
-                                print('{cveid}, {score}'.format(cveid=cveid, score=score))
                             else:
-                                print('{cveid} no baseScore'.format(cveid=cveid))
+                                score = 'x (no baseScore)'
                         else:
-                            print('{cveid} no cvss'.format(cveid=cveid))
+                            score = 'x (no cvss)'
                     else:
-                        print('{cveid} no impact'.format(cveid=cveid))
+                        score = 'x (no impact)'
+
+                    print('{cveid}, {vendor}, {score}'.format(cveid=cveid, vendor=vendor, score=score))
                 else:
                     print('{cvejson} is not cve_json'.format(cvejson=cvejson))
             else:
                 print('{cvejson} does not exist'.format(cvejson=cvejson))
+

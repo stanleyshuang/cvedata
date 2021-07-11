@@ -29,3 +29,5 @@ class linefeed(i_tracer):
             cveid = extract_cveid(line)
             if cveid:
                 self.crawler.read(cveid)
+
+                
